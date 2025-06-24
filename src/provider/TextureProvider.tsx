@@ -4,9 +4,12 @@ import { type ReactNode, Suspense, createContext, useContext, useMemo } from "re
 import * as THREE from "three";
 
 const useLoadTextures = () => {
-    const [blockDirt] = useLoader(THREE.TextureLoader, ["src/asset/block/dirt.png"]);
+    const [block_dirt, block_stone] = useLoader(THREE.TextureLoader, [
+        "src/asset/block/dirt.png",
+        "src/asset/block/stone.png",
+    ]);
 
-    const textures = useMemo(() => ({ blockDirt }), [blockDirt]);
+    const textures = useMemo(() => ({ block_dirt, block_stone }), [block_dirt, block_stone]);
 
     const nearestTextures = useMemo(
         () =>

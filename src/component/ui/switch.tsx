@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/css";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import type { ComponentProps } from "react";
 

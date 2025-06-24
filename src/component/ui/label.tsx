@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/css";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import type { ComponentProps } from "react";
 

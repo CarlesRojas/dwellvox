@@ -5,6 +5,7 @@ import * as THREE from "three";
 
 export enum BlockType {
     DIRT = "DIRT",
+    STONE = "STONE",
 }
 
 interface BlockProps {
@@ -12,25 +13,46 @@ interface BlockProps {
     position: Vector3;
 }
 
+interface BlockTexture {
+    right: Texture;
+    left: Texture;
+    top: Texture;
+    bottom: Texture;
+    front: Texture;
+    back: Texture;
+}
+const BlockTextureOrder = ["right", "left", "top", "bottom", "front", "back"];
+
 const Block = ({ type, position }: BlockProps) => {
     const textures = useTextures();
 
-    const BlockTypeTextureMap: Record<BlockType, Texture> = useMemo(
+    const BlockTypeTextureMap: Record<BlockType, BlockTexture> = useMemo(
         () => ({
-            [BlockType.DIRT]: textures.blockDirt,
+            [BlockType.DIRT]: {
+                top: textures.block_dirt,
+                bottom: textures.block_dirt,
+                left: textures.block_dirt,
+                right: textures.block_dirt,
+                front: textures.block_dirt,
+                back: textures.block_dirt,
+            },
+            [BlockType.STONE]: {
+                top: textures.block_stone,
+                bottom: textures.block_stone,
+                left: textures.block_stone,
+                right: textures.block_stone,
+                front: textures.block_stone,
+                back: textures.block_stone,
+            },
         }),
         [textures]
     );
 
     const materials = useMemo(
-        () => [
-            new THREE.MeshStandardMaterial({ map: BlockTypeTextureMap[type] }),
-            new THREE.MeshStandardMaterial({ map: BlockTypeTextureMap[type] }),
-            new THREE.MeshStandardMaterial({ map: BlockTypeTextureMap[type] }),
-            new THREE.MeshStandardMaterial({ map: BlockTypeTextureMap[type] }),
-            new THREE.MeshStandardMaterial({ map: BlockTypeTextureMap[type] }),
-            new THREE.MeshStandardMaterial({ map: BlockTypeTextureMap[type] }),
-        ],
+        () =>
+            Object.entries(BlockTypeTextureMap[type])
+                .sort((a, b) => BlockTextureOrder.indexOf(a[0]) - BlockTextureOrder.indexOf(b[0]))
+                .map(([_, texture]) => new THREE.MeshStandardMaterial({ map: texture })),
         [BlockTypeTextureMap, type]
     );
 

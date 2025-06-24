@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/css";
 import type { ComponentProps } from "react";
 
 interface InputProps extends ComponentProps<"input"> {}

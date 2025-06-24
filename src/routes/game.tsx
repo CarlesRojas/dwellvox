@@ -1,14 +1,41 @@
-import Block, { BlockType } from "@/component/Block";
+import Block from "@/component/Block";
+import { getBlockTypeAt } from "@/lib/getBlockTypeAt";
+import { vectorToString } from "@/lib/util";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { Vector3 } from "three";
 
 export const Route = createFileRoute("/game")({
     component: Game,
 });
 
+const BLOCK_RENDER_DISTANCE = 10;
+const SEED = "1234567890";
+
 function Game() {
+    const playerPosition = new Vector3(0, 0, 0);
+
+    const blocksToRender = useMemo(() => {
+        const blocks = [];
+
+        for (let x = playerPosition.x - BLOCK_RENDER_DISTANCE; x < playerPosition.x + BLOCK_RENDER_DISTANCE; x++) {
+            for (let z = playerPosition.z - BLOCK_RENDER_DISTANCE; z < playerPosition.z + BLOCK_RENDER_DISTANCE; z++) {
+                for (
+                    let y = playerPosition.y - BLOCK_RENDER_DISTANCE;
+                    y < playerPosition.y + BLOCK_RENDER_DISTANCE;
+                    y++
+                ) {
+                    const position = new Vector3(x, y, z);
+                    const blockType = getBlockTypeAt(position, SEED);
+                    if (blockType) blocks.push({ type: blockType, position });
+                }
+            }
+        }
+        return blocks;
+    }, [playerPosition]);
+
     return (
         <Canvas shadows camera={{ position: [5, 5, 5], fov: 60 }} gl={{ antialias: true }}>
             <ambientLight intensity={0.5} />
@@ -22,7 +49,9 @@ function Game() {
 
             <OrbitControls enableDamping />
 
-            <Block type={BlockType.DIRT} position={new Vector3(0, 0, 0)} />
+            {blocksToRender.map((block) => (
+                <Block key={vectorToString(block.position)} {...block} />
+            ))}
         </Canvas>
     );
 }
