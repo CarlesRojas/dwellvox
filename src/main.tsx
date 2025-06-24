@@ -6,6 +6,7 @@ import * as QueryProvider from "./provider/QueryProvider.tsx";
 
 import { routeTree } from "./routeTree.gen";
 
+import { TextureProvider } from "@/provider/TextureProvider.tsx";
 import "./styles.css";
 
 const router = createRouter({
@@ -31,7 +32,9 @@ if (rootElement && !rootElement.innerHTML) {
     root.render(
         <StrictMode>
             <QueryProvider.Provider>
-                <RouterProvider router={router} />
+                <TextureProvider>
+                    <RouterProvider router={router} />
+                </TextureProvider>
             </QueryProvider.Provider>
         </StrictMode>
     );

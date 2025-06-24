@@ -1,6 +1,8 @@
-import { Environment, OrbitControls } from "@react-three/drei";
+import Block, { BlockType } from "@/component/Block";
+import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { createFileRoute } from "@tanstack/react-router";
+import { Vector3 } from "three";
 
 export const Route = createFileRoute("/game")({
     component: Game,
@@ -9,7 +11,6 @@ export const Route = createFileRoute("/game")({
 function Game() {
     return (
         <Canvas shadows camera={{ position: [5, 5, 5], fov: 60 }} gl={{ antialias: true }}>
-            {/* Lighting */}
             <ambientLight intensity={0.5} />
             <directionalLight
                 castShadow
@@ -19,15 +20,9 @@ function Game() {
                 shadow-mapSize-height={1024}
             />
 
-            {/* Controls */}
             <OrbitControls enableDamping />
 
-            {/* Environment */}
-            <Environment preset="sunset" background />
-
-            {/* Block and Ground */}
-            <Block />
-            <Ground />
+            <Block type={BlockType.DIRT} position={new Vector3(0, 0, 0)} />
         </Canvas>
     );
 }
