@@ -13,6 +13,12 @@ body {
         @apply m-0 box-border p-0 !outline-none;
     }
 
+    html,
+    body,
+    #app {
+        @apply h-dvh w-dvw min-h-dvh min-w-dvw max-h-dvh max-w-dvw overflow-hidden bg-neutral-900 text-white;
+    }
+
     img,
     video,
     svg {
