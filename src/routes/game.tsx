@@ -1,10 +1,12 @@
 import InstanceBlock from "@/component/Block";
+import { default as Player } from "@/component/Player";
 import { getBlockTypeAt } from "@/lib/getBlockTypeAt";
 import { vectorToString } from "@/lib/util";
 import { BlockProvider } from "@/provider/BlockProvider";
 import { useTextures } from "@/provider/TextureProvider";
-import { OrbitControls } from "@react-three/drei";
+import { Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Physics } from "@react-three/rapier";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Vector3 } from "three";
@@ -41,22 +43,26 @@ function Game() {
 
     return (
         <Canvas shadows camera={{ position: [5, 5, 5], fov: 60 }} gl={{ antialias: true }}>
-            <ambientLight intensity={1} />
-            <directionalLight
-                castShadow
-                position={[10, 10, 5]}
-                intensity={1}
-                shadow-mapSize-width={1024}
-                shadow-mapSize-height={1024}
-            />
+            <Physics>
+                <ambientLight intensity={1} />
+                <directionalLight
+                    castShadow
+                    position={[10, 10, 5]}
+                    intensity={1}
+                    shadow-mapSize-width={1024}
+                    shadow-mapSize-height={1024}
+                />
 
-            <OrbitControls enableDamping />
+                <Player />
 
-            <BlockProvider textures={textures.blockTextures}>
-                {blocksToRender.map((block) => (
-                    <InstanceBlock key={vectorToString(block.position)} {...block} />
-                ))}
-            </BlockProvider>
+                <BlockProvider textures={textures.blockTextures}>
+                    {blocksToRender.map((block) => (
+                        <InstanceBlock key={vectorToString(block.position)} {...block} />
+                    ))}
+                </BlockProvider>
+            </Physics>
+
+            <Stats />
         </Canvas>
     );
 }

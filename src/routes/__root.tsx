@@ -1,3 +1,4 @@
+import { KeyboardControlsProvider } from "@/provider/KeyboardControls";
 import type { QueryClient } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 
@@ -6,5 +7,9 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-    component: () => <Outlet />,
+    component: () => (
+        <KeyboardControlsProvider>
+            <Outlet />
+        </KeyboardControlsProvider>
+    ),
 });

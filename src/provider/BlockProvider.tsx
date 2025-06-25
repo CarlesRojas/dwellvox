@@ -69,6 +69,7 @@ export const BlockProvider = ({ textures, children }: BlockProviderProps) => {
                     args={[undefined, undefined, 10000]}
                     castShadow
                     receiveShadow
+                    frustumCulled={false}
                 >
                     <boxGeometry args={[1, 1, 1]} />
                     <meshStandardMaterial map={texture} />

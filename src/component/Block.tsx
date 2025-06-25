@@ -1,5 +1,6 @@
 import { useBlockRegistry } from "@/provider/BlockProvider";
 import type { BlockType } from "@/type/Block";
+import { CuboidCollider } from "@react-three/rapier";
 import { useEffect } from "react";
 import type { Vector3 } from "three";
 
@@ -18,7 +19,7 @@ const InstanceBlock = ({ type, position }: Props) => {
         };
     }, [addBlock, removeBlock, type, position]);
 
-    return null; // does not render anything directly
+    return <CuboidCollider position={position} args={[0.5, 0.5, 0.5]} />;
 };
 
 export default InstanceBlock;
