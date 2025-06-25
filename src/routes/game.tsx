@@ -41,11 +41,11 @@ function Game() {
 
     return (
         <Canvas shadows camera={{ position: [5, 5, 5], fov: 60 }} gl={{ antialias: true }}>
-            <ambientLight intensity={0.5} />
+            <ambientLight intensity={1} />
             <directionalLight
                 castShadow
                 position={[10, 10, 5]}
-                intensity={0.8}
+                intensity={1}
                 shadow-mapSize-width={1024}
                 shadow-mapSize-height={1024}
             />
