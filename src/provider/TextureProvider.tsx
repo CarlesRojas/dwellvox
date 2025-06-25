@@ -1,4 +1,5 @@
 import LoadingBar from "@/component/LoadingBar";
+import { BlockType } from "@/type/BlockType";
 import { useLoader } from "@react-three/fiber";
 import { type ReactNode, Suspense, createContext, useContext, useMemo } from "react";
 import * as THREE from "three";
@@ -34,7 +35,18 @@ export const useTextures = () => {
     const context = useContext(TextureContext);
     if (!context) throw new Error("useTextures must be used within a TextureProvider");
 
-    return context;
+    const blockTextures: Record<BlockType, THREE.Texture> = useMemo(
+        () => ({
+            [BlockType.DIRT]: context.block_dirt,
+            [BlockType.STONE]: context.block_stone,
+        }),
+        [context]
+    );
+
+    return {
+        blockTextures,
+        context,
+    };
 };
 
 export const TextureProvider = ({ children }: { children: ReactNode }) => {

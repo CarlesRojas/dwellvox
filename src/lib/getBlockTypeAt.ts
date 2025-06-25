@@ -1,5 +1,5 @@
-import { BlockType } from "@/component/Block";
 import { vectorToString } from "@/lib/util";
+import { BlockType } from "@/type/BlockType";
 import seedrandom from "seedrandom";
 import type { Vector3 } from "three";
 

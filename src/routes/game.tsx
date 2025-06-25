@@ -1,6 +1,8 @@
-import Block from "@/component/Block";
+import InstanceBlock from "@/component/Block";
 import { getBlockTypeAt } from "@/lib/getBlockTypeAt";
 import { vectorToString } from "@/lib/util";
+import { BlockProvider } from "@/provider/BlockProvider";
+import { useTextures } from "@/provider/TextureProvider";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { createFileRoute } from "@tanstack/react-router";
@@ -16,6 +18,7 @@ const SEED = "1234567890";
 
 function Game() {
     const playerPosition = new Vector3(0, 0, 0);
+    const textures = useTextures();
 
     const blocksToRender = useMemo(() => {
         const blocks = [];
@@ -49,9 +52,11 @@ function Game() {
 
             <OrbitControls enableDamping />
 
-            {blocksToRender.map((block) => (
-                <Block key={vectorToString(block.position)} {...block} />
-            ))}
+            <BlockProvider textures={textures.blockTextures}>
+                {blocksToRender.map((block) => (
+                    <InstanceBlock key={vectorToString(block.position)} {...block} />
+                ))}
+            </BlockProvider>
         </Canvas>
     );
 }
