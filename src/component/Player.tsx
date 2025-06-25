@@ -37,7 +37,7 @@ const Player = () => {
             rigidBodyRef.current.setLinvel(
                 {
                     x: velocity.x,
-                    y: velocity.y,
+                    y: rigidBodyRef.current.linvel().y,
                     z: velocity.z,
                 },
                 true
