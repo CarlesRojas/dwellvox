@@ -1,4 +1,4 @@
-import { BlockType } from "@/type/BlockType";
+import { BlockType } from "@/type/Block";
 import { type ReactNode, createContext, useCallback, useContext, useRef } from "react";
 import { type InstancedMesh, Object3D, type Texture, type Vector3 } from "three";
 

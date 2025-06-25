@@ -1,5 +1,5 @@
 import { useBlockRegistry } from "@/provider/BlockProvider";
-import type { BlockType } from "@/type/BlockType";
+import type { BlockType } from "@/type/Block";
 import { useEffect } from "react";
 import type { Vector3 } from "three";
 
