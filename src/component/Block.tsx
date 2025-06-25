@@ -4,12 +4,12 @@ import { CuboidCollider } from "@react-three/rapier";
 import { useEffect } from "react";
 import type { Vector3 } from "three";
 
-interface Props {
+export interface InstanceBlockProps {
     type: BlockType;
     position: Vector3;
 }
 
-const InstanceBlock = ({ type, position }: Props) => {
+const InstanceBlock = ({ type, position }: InstanceBlockProps) => {
     const { addBlock, removeBlock } = useBlockRegistry();
 
     useEffect(() => {

@@ -1,10 +1,10 @@
-import { default as InstanceBlock } from "@/component/Block";
+import { default as InstanceBlock, type InstanceBlockProps } from "@/component/Block";
 import { getBlockTypeAt } from "@/lib/getBlockTypeAt";
 import { vectorToString } from "@/lib/util";
 import { BlockProvider } from "@/provider/BlockProvider";
 import { usePlayer } from "@/provider/PlayerProvider";
 import { useTextures } from "@/provider/TextureProvider";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { Vector3 } from "three";
 
 const BLOCK_RENDER_DISTANCE = 10;
@@ -13,24 +13,36 @@ const SEED = "1234567890";
 const World = () => {
     const textures = useTextures();
     const { position: playerPosition } = usePlayer();
+    const worldCache = useRef(new Map<string, InstanceBlockProps>());
 
     const blocksToRender = useMemo(() => {
-        const blocks = [];
+        const newBlocks = [];
+        const positionsInRange = new Set<string>();
 
-        for (let x = playerPosition.x - BLOCK_RENDER_DISTANCE; x < playerPosition.x + BLOCK_RENDER_DISTANCE; x++) {
-            for (let z = playerPosition.z - BLOCK_RENDER_DISTANCE; z < playerPosition.z + BLOCK_RENDER_DISTANCE; z++) {
-                for (
-                    let y = playerPosition.y - BLOCK_RENDER_DISTANCE;
-                    y < playerPosition.y + BLOCK_RENDER_DISTANCE;
-                    y++
-                ) {
-                    const position = new Vector3(x, y, z);
-                    const blockType = getBlockTypeAt(position, SEED);
-                    if (blockType) blocks.push({ type: blockType, position });
+        for (let x = -BLOCK_RENDER_DISTANCE; x < BLOCK_RENDER_DISTANCE; x++) {
+            for (let z = -BLOCK_RENDER_DISTANCE; z < BLOCK_RENDER_DISTANCE; z++) {
+                for (let y = -BLOCK_RENDER_DISTANCE; y < BLOCK_RENDER_DISTANCE; y++) {
+                    const pos = new Vector3(playerPosition.x + x, playerPosition.y + y, playerPosition.z + z);
+
+                    const key = vectorToString(pos);
+                    positionsInRange.add(key);
+
+                    let block = worldCache.current.get(key);
+                    if (!block) {
+                        const blockType = getBlockTypeAt(pos, SEED);
+                        if (!blockType) continue;
+                        block = { type: blockType, position: pos };
+                        worldCache.current.set(key, block);
+                    }
+
+                    newBlocks.push(block);
                 }
             }
         }
-        return blocks;
+
+        for (const key of worldCache.current.keys()) if (!positionsInRange.has(key)) worldCache.current.delete(key);
+
+        return newBlocks;
     }, [playerPosition]);
 
     return (

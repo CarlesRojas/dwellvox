@@ -23,11 +23,10 @@ const Player = () => {
 
         if (rigidBodyRef.current) {
             const pos = rigidBodyRef.current.translation();
-            camera.position.copy(pos);
-            const newPosition = new Vector3(Math.round(pos.x), Math.round(pos.y), Math.round(pos.z));
+            camera.position.copy(pos).add(new Vector3(0, 0.5, 0));
+            const newPosition = new Vector3(Math.round(pos.x), Math.floor(pos.y) - 1, Math.round(pos.z));
             if (!newPosition.equals(currentPosition.current)) {
                 currentPosition.current = newPosition;
-                console.log("newPosition", newPosition);
                 setPosition(newPosition);
             }
 

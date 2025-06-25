@@ -55,6 +55,7 @@ export const BlockProvider = ({ textures, children }: BlockProviderProps) => {
             const mesh = meshes.current[type];
             if (!mesh) return;
             registry.current[type].push(position);
+            // if (position.y === 0) console.log("ADD", `${position.x} ${position.z}`);
             updateMatrices(type);
         },
         [updateMatrices]
@@ -66,6 +67,7 @@ export const BlockProvider = ({ textures, children }: BlockProviderProps) => {
             if (!mesh) return;
             const index = registry.current[type].findIndex((p) => p.equals(position));
             if (index === -1) return;
+            // if (position.y === 0) console.log("REM", `${position.x} ${position.z}`);
             registry.current[type].splice(index, 1);
             updateMatrices(type);
         },

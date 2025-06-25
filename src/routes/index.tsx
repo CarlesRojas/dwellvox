@@ -5,7 +5,6 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-    console.log("App");
     return (
         <main className="w-full h-full flex items-center justify-center">
             <Link to="/game">Start</Link>

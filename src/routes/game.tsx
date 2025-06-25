@@ -12,7 +12,7 @@ export const Route = createFileRoute("/game")({
 
 function Game() {
     return (
-        <Canvas shadows camera={{ position: [5, 5, 5], fov: 60 }} gl={{ antialias: true }}>
+        <Canvas shadows camera={{ position: [0, 2, 0], fov: 90 }} gl={{ antialias: true }}>
             <Physics>
                 <ambientLight intensity={1} />
                 <directionalLight
