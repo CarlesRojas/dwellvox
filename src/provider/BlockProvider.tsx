@@ -34,29 +34,43 @@ export const BlockProvider = ({ textures, children }: BlockProviderProps) => {
     });
 
     const dummy = new Object3D();
-
-    const addBlock = useCallback(
-        (type: BlockType, position: Vector3) => {
+    const updateMatrices = useCallback(
+        (type: BlockType) => {
             const mesh = meshes.current[type];
             if (!mesh) return;
-            const index = registry.current[type].length;
-            registry.current[type].push(position);
-
-            dummy.position.copy(position);
-            dummy.updateMatrix();
-            mesh.setMatrixAt(index, dummy.matrix);
+            const positions = registry.current[type];
+            for (let i = 0; i < positions.length; i++) {
+                dummy.position.copy(positions[i]);
+                dummy.updateMatrix();
+                mesh.setMatrixAt(i, dummy.matrix);
+            }
+            mesh.count = positions.length;
             mesh.instanceMatrix.needsUpdate = true;
         },
         [dummy]
     );
 
-    const removeBlock = useCallback((type: BlockType, position: Vector3) => {
-        const mesh = meshes.current[type];
-        if (!mesh) return;
-        const index = registry.current[type].findIndex((p) => p.equals(position));
-        if (index === -1) return;
-        registry.current[type].splice(index, 1);
-    }, []);
+    const addBlock = useCallback(
+        (type: BlockType, position: Vector3) => {
+            const mesh = meshes.current[type];
+            if (!mesh) return;
+            registry.current[type].push(position);
+            updateMatrices(type);
+        },
+        [updateMatrices]
+    );
+
+    const removeBlock = useCallback(
+        (type: BlockType, position: Vector3) => {
+            const mesh = meshes.current[type];
+            if (!mesh) return;
+            const index = registry.current[type].findIndex((p) => p.equals(position));
+            if (index === -1) return;
+            registry.current[type].splice(index, 1);
+            updateMatrices(type);
+        },
+        [updateMatrices]
+    );
 
     return (
         <BlockContext.Provider value={{ addBlock, removeBlock }}>

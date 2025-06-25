@@ -55,7 +55,7 @@ const Player = () => {
                 mass={1}
                 friction={0}
                 restitution={0}
-                position={[0, 0.6, 0]}
+                position={[0, 1, 0]}
                 enabledRotations={[false, false, false]}
             >
                 {/** args={[halfCapsuleHeight-radius, radius] */}
