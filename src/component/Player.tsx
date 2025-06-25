@@ -1,3 +1,4 @@
+import { usePlayer } from "@/provider/PlayerProvider";
 import type { Control } from "@/type/Control";
 import { PointerLockControls, useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -12,9 +13,10 @@ const sidewaysDirectionVector = new Vector3();
 
 const Player = () => {
     const rigidBodyRef = useRef<RapierRigidBody>(null);
+    const currentPosition = useRef(new Vector3());
     const { camera } = useThree();
-
     const [, getKeys] = useKeyboardControls<Control>();
+    const { setPosition } = usePlayer();
 
     useFrame((_, delta) => {
         const { FORWARD, BACK, LEFT, RIGHT } = getKeys();
@@ -22,6 +24,12 @@ const Player = () => {
         if (rigidBodyRef.current) {
             const pos = rigidBodyRef.current.translation();
             camera.position.copy(pos);
+            const newPosition = new Vector3(Math.round(pos.x), Math.round(pos.y), Math.round(pos.z));
+            if (!newPosition.equals(currentPosition.current)) {
+                currentPosition.current = newPosition;
+                console.log("newPosition", newPosition);
+                setPosition(newPosition);
+            }
 
             forwardDirectionVector.set(0, 0, -Number(FORWARD) + Number(BACK));
             sidewaysDirectionVector.set(Number(RIGHT) - Number(LEFT), 0, 0);

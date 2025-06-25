@@ -2,6 +2,7 @@ import { default as InstanceBlock } from "@/component/Block";
 import { getBlockTypeAt } from "@/lib/getBlockTypeAt";
 import { vectorToString } from "@/lib/util";
 import { BlockProvider } from "@/provider/BlockProvider";
+import { usePlayer } from "@/provider/PlayerProvider";
 import { useTextures } from "@/provider/TextureProvider";
 import { useMemo } from "react";
 import { Vector3 } from "three";
@@ -11,8 +12,7 @@ const SEED = "1234567890";
 
 const World = () => {
     const textures = useTextures();
-
-    const playerPosition = new Vector3(0, 0, 0);
+    const { position: playerPosition } = usePlayer();
 
     const blocksToRender = useMemo(() => {
         const blocks = [];

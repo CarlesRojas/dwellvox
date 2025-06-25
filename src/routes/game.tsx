@@ -1,5 +1,6 @@
 import { default as Player } from "@/component/Player";
 import World from "@/component/World";
+import { PlayerProvider } from "@/provider/PlayerProvider";
 import { Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
@@ -22,9 +23,11 @@ function Game() {
                     shadow-mapSize-height={1024}
                 />
 
-                <World />
+                <PlayerProvider>
+                    <World />
 
-                <Player />
+                    <Player />
+                </PlayerProvider>
             </Physics>
 
             <Stats />
